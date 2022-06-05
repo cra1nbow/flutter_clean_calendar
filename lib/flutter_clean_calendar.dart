@@ -94,6 +94,7 @@ class Calendar extends StatefulWidget {
   final Color? bottomBarArrowColor;
   final Color? bottomBarColor;
   final String? expandableDateFormat;
+  final String Function(DateTime)? dayTextBuilder;
 
   Calendar({
     this.onMonthChanged,
@@ -123,6 +124,7 @@ class Calendar extends StatefulWidget {
     this.bottomBarArrowColor,
     this.bottomBarColor,
     this.expandableDateFormat = 'EEEE MMMM dd, yyyy',
+    this.dayTextBuilder,
   });
 
   @override
@@ -291,22 +293,25 @@ class _CalendarState extends State<Calendar> {
               date: day,
               locale: widget.locale,
               onDateSelected: () => handleSelectedDateAndUserCallback(day),
+              text: widget.dayTextBuilder?.call(day),
             ),
           );
         } else {
           dayWidgets.add(
             CalendarTile(
-                selectedColor: widget.selectedColor,
-                todayColor: widget.todayColor,
-                eventColor: widget.eventColor,
-                eventDoneColor: widget.eventDoneColor,
-                events: widget.events![day],
-                onDateSelected: () => handleSelectedDateAndUserCallback(day),
-                date: day,
-                locale: widget.locale,
-                dateStyles: configureDateStyle(monthStarted, monthEnded),
-                isSelected: Utils.isSameDay(selectedDate, day),
-                inMonth: day.month == selectedDate.month),
+              selectedColor: widget.selectedColor,
+              todayColor: widget.todayColor,
+              eventColor: widget.eventColor,
+              eventDoneColor: widget.eventDoneColor,
+              events: widget.events![day],
+              onDateSelected: () => handleSelectedDateAndUserCallback(day),
+              date: day,
+              locale: widget.locale,
+              dateStyles: configureDateStyle(monthStarted, monthEnded),
+              isSelected: Utils.isSameDay(selectedDate, day),
+              inMonth: day.month == selectedDate.month,
+              text: widget.dayTextBuilder?.call(day),
+            ),
           );
         }
       },
