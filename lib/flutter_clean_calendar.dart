@@ -702,7 +702,8 @@ class _CalendarState extends State<Calendar> {
   List<DateTime> _daysInMonth(DateTime month) {
     var first = Utils.firstDayOfMonth(month);
     var daysBefore = first.weekday;
-    var firstToDisplay = first.subtract(new Duration(days: daysBefore - 1));
+    var firstToDisplay = first.subtract(
+        new Duration(days: daysBefore - (widget.startOnMonday ? 0 : 1)));
     var last = Utils.lastDayOfMonth(month);
 
     var daysAfter = 7 - last.weekday;
@@ -714,7 +715,8 @@ class _CalendarState extends State<Calendar> {
 
     // Adding an extra day necessary. Otherwise the week with days in next month
     // would always end on Saturdays.
-    var lastToDisplay = last.add(new Duration(days: daysAfter + 1));
+    var lastToDisplay = last
+        .add(new Duration(days: daysAfter + (widget.startOnMonday ? 0 : 1)));
     return Utils.daysInRange(firstToDisplay, lastToDisplay).toList();
   }
 }
